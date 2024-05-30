@@ -1,5 +1,5 @@
-# eureka-application
-Template application for base web site.
+# France Stats Application
+Site web pour recenser quelques statistiques française auprès de sources sûres, tel que l'INSEE, data.gouv.fr 
 
 
 ## Contributing
@@ -67,12 +67,12 @@ run the following commands (both are required for full support):
 
 Minimal supported version:
 ```bash
-make php81compatibility
+make php-min-compatibility
 ```
 
 Maximal supported version:
 ```bash
-make php83compatibility
+make php-max-compatibility
 ```
 
 #### CI Simulation
