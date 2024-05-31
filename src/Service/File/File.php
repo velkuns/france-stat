@@ -20,12 +20,15 @@ class File extends \SplFileObject implements FileInterface
     protected bool $isGzCompressed = false;
     protected bool $removeBOM = false;
 
+    /**
+     * @param resource|null $context
+     */
     public function __construct(
         string $fileName,
         string $mode = 'r',
         bool $useIncludePath = false,
         $context = null,
-        bool $isGzCompressed = false
+        bool $isGzCompressed = false,
     ) {
         $this->isGzCompressed = $isGzCompressed;
 
@@ -203,7 +206,7 @@ class File extends \SplFileObject implements FileInterface
         $currentId = \posix_getuid();
         if ($ownerId === false || $currentId !== $ownerId) {
             throw new Exception\FilePermissionException(
-                "chmod can only be run by root or the owner! (file: '$file', owner_id: $ownerId, current_id: $currentId)"
+                "chmod can only be run by root or the owner! (file: '$file', owner_id: $ownerId, current_id: $currentId)",
             );
         }
 

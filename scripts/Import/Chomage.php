@@ -63,54 +63,104 @@ class Chomage extends AbstractScript
 
     public function run(): void
     {
+        if (empty($this->options()->value('file', 'f'))) {
+            throw new \UnexpectedValueException('Missing file option', 1000);
+        }
+
         $csv = new FileCsv(
             self::BASE_PATH . '/' . $this->options()
-                ->value('f', 'file')
+                ->value('f', 'file'),
         );
         $csv->setCsvControl(separator: ";");
         $csv->skipHeader();
 
-        \var_export($csv->getHeader());
+        //\var_export($csv->getHeader());
 
         /** @var array<int, string> $line */
         foreach ($csv as $line) {
             $label = $line[0];
-            if ($label === 'Codes' || \str_ends_with($label, 'Série arrêtée') || \str_contains($label, 'Ensemble')) {
+            if ($this->isNonInterestingLine($label)) {
                 continue;
             }
 
-            if (\str_contains($label, ' (en milliers)')) {
-                $isPercent = false;
-                $label = \str_replace(' (en milliers)', '', $label);
-            } elseif (\str_contains($label, ' part dans la population')) {
-                $isPercent = true;
-                $label = \str_replace(' (part dans la population)', '', $label);
-            } else {
-                $isPercent = true;
-            }
+            //~ Check if percentage + clean label if needed
+            $isPercentage = $this->isPercentage($label);
 
+            //~ Parse group, segment & region
             [$group, $segment, $region,] = \explode(' - ', $label);
 
-            $isMetropolitan = $region == 'France métropolitaine';
-            if (\str_contains($segment, ' ')) {
-                [$gender, $segment] = \explode(' ', $segment, 2);
-            } else {
+            //~ Check if it is metropolitan or global (excluding Mayotte)
+            $isMetropolitan = $this->isMetropolitan($region);
+
+            if (!\str_contains($segment, ' ')) {
                 continue;
-                //$gender  = $segment;
-                //$segment = '';
+            }
+
+            //~ Parse gender (or type "Inactif") + segment
+            [$gender, $segment] = \explode(' ', $segment, 2);
+
+            //~ Clean segment
+            $segment  = \str_replace(' (part dans la population de 15 ans ou plus)', '', $segment);
+            $segment  = \str_replace(' (part de la population de 15 à 64 ans)', '', $segment);
+            $segment  = \str_replace(' (part dans la population)', '', $segment);
+            $segments = $this->parseSegment($segment);
+
+            if (empty($segments)) {
+                continue;
             }
 
             var_export(
                 [
-                    'label'           => $line[0],
+                    //'label'           => $line[0],
                     'group'           => $group,
                     'gender'          => $gender,
-                    'segment'         => $segment,
+                    //'segment'         => $segment,
+                    'segments'        => $segments,
                     'is_metropolitan' => $isMetropolitan,
-                    'is_percent'      => $isPercent,
-                ]
+                    'is_percentage'   => $isPercentage,
+                ],
             );
             //$this->output()->writeln($label);
         }
+    }
+
+    private function isNonInterestingLine(string $label): bool
+    {
+        return $label === 'Codes' ||
+            \str_ends_with($label, 'Série arrêtée') ||
+            \str_contains($label, 'Ensemble') ||
+            (!\str_contains($label, 'Hommes') && !\str_contains($label, 'Femmes') && !\str_contains($label, 'Inactifs'))
+        ;
+    }
+
+    private function isPercentage(string &$label): bool
+    {
+        if (\str_contains($label, ' (en milliers)')) {
+            $label = \str_replace(' (en milliers)', '', $label);
+            return false;
+        } elseif (\str_contains($label, ' part dans la population')) {
+            $label = \str_replace(' (part dans la population)', '', $label);
+            return true;
+        }
+
+        return true;
+    }
+
+    private function isMetropolitan(string $region): bool
+    {
+        return $region === 'France métropolitaine';
+    }
+
+    /**
+     * @return array{0?: int, 1?: int}
+     */
+    private function parseSegment(string $segment): array
+    {
+        return match($segment) {
+            'de moins de 25 ans', 'de 15 à 24 ans' => [15, 24],
+            'de 25 à 49 ans'                       => [25, 49],
+            'de 50 ans ou plus', 'de 50 à 64 ans'  => [50, 64],
+            default                                => [],
+        };
     }
 }

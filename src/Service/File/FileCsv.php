@@ -37,7 +37,7 @@ class FileCsv extends File
         string $openMode = 'r',
         bool $useIncludePath = false,
         $context = null,
-        bool $isGzCompressed = false
+        bool $isGzCompressed = false,
     ) {
         parent::__construct($fileName, $openMode, $useIncludePath, $context, $isGzCompressed);
 
