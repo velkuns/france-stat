@@ -1,15 +1,15 @@
 parameters:
 
   meta.config:
-    title: 'Eureka'
+    title: 'France Stats'
     charset: 'utf-8'
 
     app:
       name_short: ''
-      name_full: 'Eureka Web App'
+      name_full: 'France Stats'
 
-    description: 'This application is an template web application based on Eureka Framework component'
-    keywords:    'eureka, web, application, template, component, php, framework'
+    description: 'France Stats web application'
+    keywords:    'France, web, application, statistiques'
     author:      'Romain Cottard'
     version:     '%app.version%'
 
