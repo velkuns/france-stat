@@ -1,0 +1,43 @@
+# ORM Config file
+parameters:
+
+  orm.config.unemployment:
+    comment:
+      author:    '%orm.comment.author%'
+      copyright: '%orm.comment.copyright%'
+
+    namespace:
+      entity:     '%orm.base_namespace.entity%\Unemployment\Entity'
+      mapper:     '%orm.base_namespace.mapper%\Unemployment\Infrastructure\Mapper'
+      repository: '%orm.base_namespace.repository%\Unemployment\Repository'
+
+    path:
+      entity:     '%orm.base_path.entity%/Unemployment/Entity'
+      mapper:     '%orm.base_path.mapper%/Unemployment/Infrastructure/Mapper'
+      repository: '%orm.base_path.repository%/Unemployment/Repository'
+
+    cache:
+      enabled: '%orm.cache.enabled%'
+      prefix:  'unemployment'
+
+    database:
+      table: 'unemployment'
+      prefix: [ 'unemployment' ]
+
+    class:
+      classname: 'Unemployment'
+
+    #~ List of join configuration for "eager or lazy loading"
+    joins:
+      Values :
+        eager_loading: true
+        config:   'unemployment_value'
+        relation: 'many'
+        type:     'inner'
+        keys:
+          unemployment_id: true
+
+    validation:
+      enabled: '%orm.validation.enabled%'
+      auto:    '%orm.validation.auto%'
+      extended_validation: ~

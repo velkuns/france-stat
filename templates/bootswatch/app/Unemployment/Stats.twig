@@ -1,0 +1,26 @@
+{% extends '@common/Frame/Normal.twig' %}
+
+{% block page_title %}{{ meta.title }} | Home{% endblock %}
+{% block og_title %}{{ meta.title }} | Home{% endblock %}
+
+{% block content %}
+
+    <div class="page-header" id="banner">
+        <div class="row">
+            <div class="col-lg-8 col-md-7 col-sm-6 mb-3">
+                <h1>Chômage en France</h1>
+                <h3 class="text-success">Source: <a href="https://www.insee.fr/fr/statistiques/series/102760732">Insee - 7 mai 2024</a></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for graph in graphs %}
+        <div class="col-12">
+            <h3>{{ graph.name }} - {{ graph.valueName }}</h3>
+            <canvas data-graph-id="{{ graph.id }}" data-graph-name="{{ graph.name }}" data-value-name="{{ graph.valueName }}" class="graph"></canvas>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

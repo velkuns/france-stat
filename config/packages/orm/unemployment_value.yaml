@@ -1,0 +1,33 @@
+# ORM Config file
+parameters:
+
+  orm.config.unemployment_value:
+    comment:
+      author:    '%orm.comment.author%'
+      copyright: '%orm.comment.copyright%'
+
+    namespace:
+      entity:     '%orm.base_namespace.entity%\Unemployment\Entity'
+      mapper:     '%orm.base_namespace.mapper%\Unemployment\Infrastructure\Mapper'
+      repository: '%orm.base_namespace.repository%\Unemployment\Repository'
+
+    path:
+      entity:     '%orm.base_path.entity%/Unemployment/Entity'
+      mapper:     '%orm.base_path.mapper%/Unemployment/Infrastructure/Mapper'
+      repository: '%orm.base_path.repository%/Unemployment/Repository'
+
+    cache:
+      enabled: '%orm.cache.enabled%'
+      prefix:  'unemployment_value'
+
+    database:
+      table: 'unemployment_value'
+      prefix: [ 'unemployment_value' ]
+
+    class:
+      classname: 'UnemploymentValue'
+
+    validation:
+      enabled: '%orm.validation.enabled%'
+      auto:    '%orm.validation.auto%'
+      extended_validation: ~

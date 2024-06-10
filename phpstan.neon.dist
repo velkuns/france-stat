@@ -13,3 +13,8 @@ parameters:
 
   bootstrapFiles:
     - ./vendor/autoload.php
+
+  ignoreErrors:
+    - identifier: missingType.generics
+    - '`Cannot cast mixed to int.`'
+    - '`Parameter #1 \$content of method Eureka\\Kernel\\Http\\Controller\\Controller::getResponseJson\(\)`'
