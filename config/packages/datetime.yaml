@@ -3,7 +3,17 @@ services:
     autowire: true
 
   #~ PSR Clock
-  Application\Service\Clock\SystemClock: ~
+  Psr\Clock\ClockInterface:
+    factory: ['Lcobucci\Clock\SystemClock', 'fromUTC']
+
+  clock.utc:
+    alias: 'Psr\Clock\ClockInterface'
+
+  clock.frozen:
+    class: 'Lcobucci\Clock\FrozenClock'
+    arguments:
+      $now: '@application.date.time.now.utc'
+
 
   #~ Date provider (time zone UTC & date time now UTC)
   application.date.time.zone.utc:

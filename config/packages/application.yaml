@@ -6,6 +6,7 @@ parameters:
   app.cookie.secure:   false  # set to true if app use https
 
   app.public.assets.path: '%kernel.directory.root%/public/assets'
+  app.data.path:          '%kernel.directory.root%/data'
 
 services:
   _defaults:

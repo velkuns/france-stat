@@ -3,19 +3,35 @@
 # =                                                 WEB                                                                =
 # ======================================================================================================================
 home:
-    path:       /
-    controller: Application\Controller\Web\Home\HomeController::index
-    methods:    [GET]
-    defaults:
-        authenticationRequired: false
+  path:       /
+  controller: Application\Controller\Web\Home\HomeController::index
+  methods:    [ GET ]
+  defaults:
+    authenticationRequired: false
+
+stats_unemployment:
+  path:       /chomage
+  controller: Application\Controller\Web\Unemployment\UnemploymentController::view
+  methods:    [ GET ]
+  defaults:
+    authenticationRequired: false
 
 
 # ======================================================================================================================
 # =                                                 WEB                                                                =
 # ======================================================================================================================
 api_ping:
-    path:       /api/ping
-    controller: Application\Controller\Api\Home\HomeApiController::ping
-    methods:    [GET]
-    defaults:
-        authenticationRequired: false
+  path:       /api/ping
+  controller: Application\Controller\Api\Home\HomeApiController::ping
+  methods:    [ GET ]
+  defaults:
+    authenticationRequired: false
+
+api_unemployment_graph:
+  path:       /api/unemployments/graphs/{graphId}
+  controller: Application\Controller\Api\Unemployment\UnemploymentApiController::graph
+  methods:    [ GET ]
+  requirements:
+    graphId: '\d+'
+  defaults:
+    authenticationRequired: false

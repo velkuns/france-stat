@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    public:   true
+
+  #~ Application source code except controllers & middleware (see packages/middleware.yaml)
+  Application\Script\Import\Unemployment:
+    arguments:
+      $dataPath: '%app.data.path%/unemployment'
